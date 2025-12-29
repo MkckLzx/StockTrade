@@ -8,16 +8,30 @@ namespace StockTrade
     /// </summary>
     public partial class GlobalHotkeyConfigForm : Form
     {
+        #region 私有字段
+
         private string _currentHotkey;
         private bool _isRecording;
         private Keys _hotkey;
         private Keys _modifiers;
         
+        #endregion
+
+        #region 事件
+
         /// <summary>
         /// 配置变更事件
         /// </summary>
-        public event EventHandler<string> HotkeyChanged;
+        public event EventHandler<string>? HotkeyChanged;
         
+        #endregion
+
+        #region 构造函数
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="currentHotkey">当前快捷键</param>
         public GlobalHotkeyConfigForm(string currentHotkey)
         {
             InitializeComponent();
@@ -26,9 +40,14 @@ namespace StockTrade
             ParseHotkey(currentHotkey);
         }
         
+        #endregion
+
+        #region 私有方法
+
         /// <summary>
         /// 解析快捷键字符串
         /// </summary>
+        /// <param name="hotkeyStr">快捷键字符串</param>
         private void ParseHotkey(string hotkeyStr)
         {
             if (string.IsNullOrEmpty(hotkeyStr))
@@ -66,6 +85,7 @@ namespace StockTrade
         /// <summary>
         /// 生成快捷键字符串
         /// </summary>
+        /// <returns>快捷键字符串</returns>
         private string GenerateHotkeyString()
         {
             StringBuilder sb = new StringBuilder();
@@ -82,6 +102,10 @@ namespace StockTrade
             return sb.ToString();
         }
         
+        #endregion
+
+        #region 事件处理
+
         /// <summary>
         /// 录制快捷键按钮点击事件
         /// </summary>
@@ -125,6 +149,10 @@ namespace StockTrade
             this.Close();
         }
         
+        #endregion
+
+        #region 重写方法
+
         /// <summary>
         /// 重写ProcessCmdKey方法，处理按键录制
         /// </summary>
@@ -148,6 +176,8 @@ namespace StockTrade
             
             return base.ProcessCmdKey(ref msg, keyData);
         }
+        
+        #endregion
         
         /// <summary>
         /// 初始化组件

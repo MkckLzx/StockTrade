@@ -11,9 +11,6 @@
         /// 控件声明
         /// </summary>
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnSaveToken;
-        private System.Windows.Forms.TextBox txtApiToken;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgvStocks;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsStatusLabel;
@@ -26,6 +23,7 @@
         private System.Windows.Forms.CheckBox chkEnableScrolling;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem showWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -76,11 +74,9 @@
             chkEnableScrolling = new CheckBox();
             btnAddStock = new Button();
             btnRefresh = new Button();
+            btnClear = new Button();
             txtStockCode = new TextBox();
             label2 = new Label();
-            btnSaveToken = new Button();
-            txtApiToken = new TextBox();
-            label1 = new Label();
             dgvStocks = new DataGridView();
             statusStrip1 = new StatusStrip();
             tsStatusLabel = new ToolStripStatusLabel();
@@ -111,11 +107,9 @@
             panel1.Controls.Add(chkEnableScrolling);
             panel1.Controls.Add(btnAddStock);
             panel1.Controls.Add(btnRefresh);
+            panel1.Controls.Add(btnClear);
             panel1.Controls.Add(txtStockCode);
             panel1.Controls.Add(label2);
-            panel1.Controls.Add(btnSaveToken);
-            panel1.Controls.Add(txtApiToken);
-            panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
@@ -206,7 +200,7 @@
             // chkEnableScrolling
             // 
             chkEnableScrolling.AutoSize = true;
-            chkEnableScrolling.Location = new Point(12, 56);
+            chkEnableScrolling.Location = new Point(12, 19);
             chkEnableScrolling.Name = "chkEnableScrolling";
             chkEnableScrolling.Size = new Size(135, 21);
             chkEnableScrolling.TabIndex = 6;
@@ -216,7 +210,7 @@
             // 
             // btnAddStock
             // 
-            btnAddStock.Location = new Point(592, 52);
+            btnAddStock.Location = new Point(592, 19);
             btnAddStock.Name = "btnAddStock";
             btnAddStock.Size = new Size(75, 26);
             btnAddStock.TabIndex = 5;
@@ -226,7 +220,7 @@
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(673, 52);
+            btnRefresh.Location = new Point(673, 19);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(75, 26);
             btnRefresh.TabIndex = 6;
@@ -234,9 +228,19 @@
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 
+            // btnClear
+            // 
+            btnClear.Location = new Point(754, 19);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(75, 26);
+            btnClear.TabIndex = 7;
+            btnClear.Text = "清空";
+            btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
+            // 
             // txtStockCode
             // 
-            txtStockCode.Location = new Point(307, 52);
+            txtStockCode.Location = new Point(307, 19);
             txtStockCode.Name = "txtStockCode";
             txtStockCode.PlaceholderText = "输入股票/基金代码，多个用逗号分隔";
             txtStockCode.Size = new Size(280, 23);
@@ -245,38 +249,10 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(227, 56);
+            label2.Location = new Point(227, 23);
             label2.Name = "label2";
             label2.Size = new Size(68, 17);
             label2.TabIndex = 3;
-            label2.Text = "股票代码：";
-            // 
-            // btnSaveToken
-            // 
-            btnSaveToken.Location = new Point(673, 19);
-            btnSaveToken.Name = "btnSaveToken";
-            btnSaveToken.Size = new Size(75, 26);
-            btnSaveToken.TabIndex = 2;
-            btnSaveToken.Text = "保存";
-            btnSaveToken.UseVisualStyleBackColor = true;
-            btnSaveToken.Click += btnSaveToken_Click;
-            // 
-            // txtApiToken
-            // 
-            txtApiToken.Location = new Point(100, 19);
-            txtApiToken.Name = "txtApiToken";
-            txtApiToken.PlaceholderText = "输入iTick API Token";
-            txtApiToken.Size = new Size(567, 23);
-            txtApiToken.TabIndex = 1;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 23);
-            label1.Name = "label1";
-            label1.Size = new Size(79, 17);
-            label1.TabIndex = 0;
-            label1.Text = "API Token：";
             // 
             // dgvStocks
             // 

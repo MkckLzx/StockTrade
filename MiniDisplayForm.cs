@@ -5,70 +5,150 @@ using System.Runtime.InteropServices;
 namespace StockTrade
 {
     /// <summary>
-    /// 小窗口展示类
+    /// 小窗口展示类，用于在小窗口中显示股票数据
     /// </summary>
     public partial class MiniDisplayForm : Form
     {
-        // Windows API常量和函数声明，用于确保窗口始终在最顶层
-        private const int HWND_TOPMOST = -1;
-        private const int HWND_NOTOPMOST = -2;
-        private const int HWND_DESKTOP = 0;
-        private const int SWP_NOSIZE = 0x0001;
-        private const int SWP_NOMOVE = 0x0002;
-        private const int SWP_NOACTIVATE = 0x0010;
-        private const int WS_EX_TOPMOST = 0x00000008;
-        private const int WS_EX_NOACTIVATE = 0x08000000;
-        private const int GWL_EXSTYLE = -20;
-        private const int WM_ACTIVATE = 0x0006;
-        private const int WA_ACTIVE = 1;
-        private const int WA_INACTIVE = 0;
-        
+        #region Windows API 常量和函数声明
+
+        // 窗口层级常量
+        private const int HWND_TOPMOST = -1;       // 最顶层窗口
+        private const int HWND_NOTOPMOST = -2;     // 非最顶层窗口
+        private const int HWND_DESKTOP = 0;        // 桌面窗口
+
+        // SetWindowPos 标志
+        private const int SWP_NOSIZE = 0x0001;     // 不改变窗口大小
+        private const int SWP_NOMOVE = 0x0002;     // 不改变窗口位置
+        private const int SWP_NOACTIVATE = 0x0010; // 不激活窗口
+
+        // 窗口扩展样式
+        private const int WS_EX_TOPMOST = 0x00000008;  // 最顶层样式
+        private const int WS_EX_NOACTIVATE = 0x08000000; // 不激活样式
+
+        // GetWindowLong/SetWindowLong 索引
+        private const int GWL_EXSTYLE = -20;        // 扩展样式索引
+
+        // 窗口消息
+        private const int WM_ACTIVATE = 0x0006;     // 激活消息
+        private const int WA_ACTIVE = 1;            // 激活状态
+        private const int WA_INACTIVE = 0;          // 非激活状态
+
+        /// <summary>
+        /// 设置窗口位置和样式
+        /// </summary>
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-        
+
+        /// <summary>
+        /// 获取窗口样式
+        /// </summary>
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        
+
+        /// <summary>
+        /// 设置窗口样式
+        /// </summary>
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-        
+
+        /// <summary>
+        /// 获取前台窗口
+        /// </summary>
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
-        
+
+        /// <summary>
+        /// 设置前台窗口
+        /// </summary>
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
-        
+
+        /// <summary>
+        /// 获取当前线程ID
+        /// </summary>
         [DllImport("kernel32.dll")]
         private static extern uint GetCurrentThreadId();
-        
+
+        /// <summary>
+        /// 获取窗口所属的线程ID
+        /// </summary>
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-        
+
+        /// <summary>
+        /// 附加线程输入
+        /// </summary>
         [DllImport("user32.dll")]
         private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
-        
+
+        #endregion
+
+        #region 私有字段
+
         private List<Stock> _stockList; // 要显示的股票列表
         private int _currentStockIndex; // 当前显示的股票索引
-        private bool _isDragging;
-        private Point _dragStartPoint;
-        private System.Windows.Forms.Timer _topMostTimer; // 用于定期检查最顶层状态
-        private System.Windows.Forms.Timer _scrollTimer; // 用于控制滚动显示
+        private bool _isDragging;       // 是否正在拖动窗口
+        private Point _dragStartPoint;  // 拖动起始点
+        private System.Windows.Forms.Timer _topMostTimer;    // 用于定期检查最顶层状态的定时器
+        private System.Windows.Forms.Timer _scrollTimer;     // 用于控制股票滚动显示的定时器
         private AppConfig _currentConfig; // 当前配置
-        
-        public MiniDisplayForm(AppConfig config = null)
+
+        #endregion
+
+        #region 构造函数
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="config">应用程序配置</param>
+        public MiniDisplayForm(AppConfig? config = null)
         {
-            // 在窗口创建前设置扩展样式
+            // 在窗口创建前设置基本样式
+            InitializeFormStyle();
+            
+            // 初始化组件
+            InitializeComponent();
+            
+            // 初始化数据和事件
+            InitializeData();
+            InitializeEvents();
+            InitializeTimers();
+            
+            // 应用配置
+            if (config != null)
+            {
+                ApplyConfig(config);
+            }
+            
+            // 设置默认位置到屏幕左下角
+            SetDefaultLocation();
+        }
+
+        /// <summary>
+        /// 初始化窗口基本样式
+        /// </summary>
+        private void InitializeFormStyle()
+        {
             this.StartPosition = FormStartPosition.Manual;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Opacity = 0.9;
-            
-            InitializeComponent();
-            
-            // 初始化股票列表
+        }
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
             _stockList = new List<Stock>();
             _currentStockIndex = 0;
-            
-            // 启用鼠标拖动事件
+        }
+
+        /// <summary>
+        /// 初始化事件处理
+        /// </summary>
+        private void InitializeEvents()
+        {
+            // 启用窗口级鼠标拖动事件
             this.MouseDown += MiniDisplayForm_MouseDown;
             this.MouseMove += MiniDisplayForm_MouseMove;
             this.MouseUp += MiniDisplayForm_MouseUp;
@@ -80,28 +160,36 @@ namespace StockTrade
             AddMouseEvents(lblOpenPrice);
             AddMouseEvents(lblChangeAmount);
             AddMouseEvents(lblChangePercent);
-            
-            // 初始化定时器，定期检查最顶层状态
+        }
+
+        /// <summary>
+        /// 初始化定时器
+        /// </summary>
+        private void InitializeTimers()
+        {
+            // 初始化最顶层检查定时器
             _topMostTimer = new System.Windows.Forms.Timer();
             _topMostTimer.Interval = 1000; // 每秒检查一次
             _topMostTimer.Tick += TopMostTimer_Tick;
             _topMostTimer.Start();
             
-            // 初始化滚动定时器，控制股票滚动显示
+            // 初始化滚动定时器
             _scrollTimer = new System.Windows.Forms.Timer();
             _scrollTimer.Interval = 3000; // 默认3秒切换一次
             _scrollTimer.Tick += ScrollTimer_Tick;
             _scrollTimer.Start();
-            
-            // 应用配置
-            if (config != null)
-            {
-                ApplyConfig(config);
-            }
-            
-            // 将默认位置调整到左下角
-            this.Location = new Point(20, Screen.PrimaryScreen.Bounds.Bottom - this.Height - 20);
         }
+
+        /// <summary>
+        /// 设置默认位置到屏幕左下角
+        /// </summary>
+        private void SetDefaultLocation()
+        {
+            int margin = 20;
+            this.Location = new Point(margin, Screen.PrimaryScreen.Bounds.Bottom - this.Height - margin);
+        }
+
+        #endregion
         
         /// <summary>
         /// 为标签添加鼠标事件
@@ -118,8 +206,10 @@ namespace StockTrade
         /// </summary>
         public void ApplyConfig(AppConfig config)
         {
-            // 应用尺寸配置
-            this.Size = new Size(config.MiniDisplayWidth, config.MiniDisplayHeight);
+            // 验证并应用尺寸配置，确保高度大于0
+            int width = config.MiniDisplayWidth;
+            int height = Math.Max(config.MiniDisplayHeight, 1); // 确保高度大于0
+            this.Size = new Size(width, height);
             
             // 应用背景颜色（不含透明度）
             Color bgColor = ParseColor(config.MiniDisplayBgColor);
@@ -370,6 +460,24 @@ namespace StockTrade
                 // 更新显示
                 UpdateDisplay();
             }
+            else
+            {
+                // 清空所有标签的文本内容
+                lblName.Text = "";
+                lblCode.Text = "";
+                lblCurrentPrice.Text = "";
+                lblOpenPrice.Text = "";
+                lblChangeAmount.Text = "";
+                lblChangePercent.Text = "";
+                
+                // 隐藏所有标签
+                lblName.Visible = false;
+                lblCode.Visible = false;
+                lblCurrentPrice.Visible = false;
+                lblOpenPrice.Visible = false;
+                lblChangeAmount.Visible = false;
+                lblChangePercent.Visible = false;
+            }
         }
         
         /// <summary>
@@ -472,21 +580,25 @@ namespace StockTrade
         }
         
         /// <summary>
-        /// 双击窗口隐藏
+        /// 双击窗口事件处理
         /// </summary>
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
-            this.Hide();
             
-            // 触发隐藏事件，通知主窗口更新状态
-            Hidden?.Invoke(this, EventArgs.Empty);
+            // 触发双击事件，通知主窗口处理显示/隐藏逻辑
+            DoubleClicked?.Invoke(this, EventArgs.Empty);
         }
         
         /// <summary>
         /// 当窗口隐藏时触发的事件
         /// </summary>
         public event EventHandler Hidden;
+        
+        /// <summary>
+        /// 当窗口被双击时触发的事件
+        /// </summary>
+        public event EventHandler DoubleClicked;
         
         /// <summary>
         /// 初始化组件
@@ -562,6 +674,7 @@ namespace StockTrade
             Controls.Add(lblChangeAmount);
             Controls.Add(lblChangePercent);
             Name = "MiniDisplayForm";
+            ShowInTaskbar = false;
             ResumeLayout(false);
             PerformLayout();
         }

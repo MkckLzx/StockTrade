@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace StockTrade
 {
@@ -20,75 +21,26 @@ namespace StockTrade
             InitializeComponent();
             _config = config;
             
-            // 初始化新增的控件
-            cmbFontFamily = new ComboBox();
-            nudFontSize = new NumericUpDown();
-            nudScrollInterval = new NumericUpDown();
-            label7 = new Label();
-            label8 = new Label();
-            label9 = new Label();
+            // 初始化事件
+            InitializeEvents();
             
-            // 设置控件的基本属性
-            cmbFontFamily.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbFontFamily.Location = new Point(150, 296);
-            cmbFontFamily.Name = "cmbFontFamily";
-            cmbFontFamily.Size = new Size(100, 25);
-            cmbFontFamily.TabIndex = 23;
-            
-            nudFontSize.Minimum = 6;
-            nudFontSize.Maximum = 20;
-            nudFontSize.Location = new Point(150, 330);
-            nudFontSize.Name = "nudFontSize";
-            nudFontSize.Size = new Size(100, 23);
-            nudFontSize.TabIndex = 24;
-            nudFontSize.Value = 10;
-            
-            nudScrollInterval.Minimum = 1000;
-            nudScrollInterval.Maximum = 10000;
-            nudScrollInterval.Location = new Point(150, 363);
-            nudScrollInterval.Name = "nudScrollInterval";
-            nudScrollInterval.Size = new Size(100, 23);
-            nudScrollInterval.TabIndex = 25;
-            nudScrollInterval.Value = 3000;
-            
-            label7.AutoSize = true;
-            label7.Location = new Point(30, 300);
-            label7.Name = "label7";
-            label7.Size = new Size(44, 17);
-            label7.TabIndex = 26;
-            label7.Text = "字体：";
-            
-            label8.AutoSize = true;
-            label8.Location = new Point(30, 332);
-            label8.Name = "label8";
-            label8.Size = new Size(68, 17);
-            label8.TabIndex = 27;
-            label8.Text = "字体大小：";
-            
-            label9.AutoSize = true;
-            label9.Location = new Point(30, 365);
-            label9.Name = "label9";
-            label9.Size = new Size(80, 17);
-            label9.TabIndex = 28;
-            label9.Text = "滚动间隔：";
-            
-            // 添加控件到表单
-            Controls.Add(label7);
-            Controls.Add(label8);
-            Controls.Add(label9);
-            Controls.Add(cmbFontFamily);
-            Controls.Add(nudFontSize);
-            Controls.Add(nudScrollInterval);
-            
-            // 调整表单大小
-            this.ClientSize = new Size(320, 470);
-            if (btnApply != null && btnClose != null)
-            {
-                btnApply.Location = new Point(80, 420);
-                btnClose.Location = new Point(180, 420);
-            }
-            
+            // 加载配置到UI
             LoadConfig();
+        }
+        
+        /// <summary>
+        /// 初始化事件处理
+        /// </summary>
+        private void InitializeEvents()
+        {
+            // 为所有颜色选择按钮绑定统一的点击事件
+            btnBgColor.Click += ColorButton_Click;
+            btnNameColor.Click += ColorButton_Click;
+            btnCodeColor.Click += ColorButton_Click;
+            btnCurrentPriceColor.Click += ColorButton_Click;
+            btnOpenPriceColor.Click += ColorButton_Click;
+            btnChangeAmountColor.Click += ColorButton_Click;
+            btnChangePercentColor.Click += ColorButton_Click;
         }
         
         /// <summary>
@@ -198,106 +150,20 @@ namespace StockTrade
         }
         
         /// <summary>
-        /// 背景颜色选择按钮点击事件
+        /// 颜色选择按钮通用点击事件
         /// </summary>
-        private void btnBgColor_Click(object sender, EventArgs e)
+        private void ColorButton_Click(object sender, EventArgs e)
         {
-            using (ColorDialog colorDialog = new ColorDialog())
+            Button btn = sender as Button;
+            if (btn != null)
             {
-                colorDialog.Color = btnBgColor.BackColor;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
+                using (ColorDialog colorDialog = new ColorDialog())
                 {
-                    btnBgColor.BackColor = colorDialog.Color;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// 名称颜色选择按钮点击事件
-        /// </summary>
-        private void btnNameColor_Click(object sender, EventArgs e)
-        {
-            using (ColorDialog colorDialog = new ColorDialog())
-            {
-                colorDialog.Color = btnNameColor.BackColor;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    btnNameColor.BackColor = colorDialog.Color;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// 代码颜色选择按钮点击事件
-        /// </summary>
-        private void btnCodeColor_Click(object sender, EventArgs e)
-        {
-            using (ColorDialog colorDialog = new ColorDialog())
-            {
-                colorDialog.Color = btnCodeColor.BackColor;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    btnCodeColor.BackColor = colorDialog.Color;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// 现价颜色选择按钮点击事件
-        /// </summary>
-        private void btnCurrentPriceColor_Click(object sender, EventArgs e)
-        {
-            using (ColorDialog colorDialog = new ColorDialog())
-            {
-                colorDialog.Color = btnCurrentPriceColor.BackColor;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    btnCurrentPriceColor.BackColor = colorDialog.Color;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// 开盘价颜色选择按钮点击事件
-        /// </summary>
-        private void btnOpenPriceColor_Click(object sender, EventArgs e)
-        {
-            using (ColorDialog colorDialog = new ColorDialog())
-            {
-                colorDialog.Color = btnOpenPriceColor.BackColor;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    btnOpenPriceColor.BackColor = colorDialog.Color;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// 涨跌额颜色选择按钮点击事件
-        /// </summary>
-        private void btnChangeAmountColor_Click(object sender, EventArgs e)
-        {
-            using (ColorDialog colorDialog = new ColorDialog())
-            {
-                colorDialog.Color = btnChangeAmountColor.BackColor;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    btnChangeAmountColor.BackColor = colorDialog.Color;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// 涨跌幅颜色选择按钮点击事件
-        /// </summary>
-        private void btnChangePercentColor_Click(object sender, EventArgs e)
-        {
-            using (ColorDialog colorDialog = new ColorDialog())
-            {
-                colorDialog.Color = btnChangePercentColor.BackColor;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    btnChangePercentColor.BackColor = colorDialog.Color;
+                    colorDialog.Color = btn.BackColor;
+                    if (colorDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        btn.BackColor = colorDialog.Color;
+                    }
                 }
             }
         }
@@ -352,47 +218,59 @@ namespace StockTrade
             labelChangePercentColor = new Label();
             trkBgOpacity = new TrackBar();
             label6 = new Label();
+            cmbFontFamily = new ComboBox();
+            nudFontSize = new NumericUpDown();
+            nudScrollInterval = new NumericUpDown();
+            label7 = new Label();
+            label8 = new Label();
+            label9 = new Label();
             ((System.ComponentModel.ISupportInitialize)nudWidth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudHeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trkBgOpacity).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudFontSize).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudScrollInterval).BeginInit();
             SuspendLayout();
             // 
             // btnBgColor
             // 
-            btnBgColor.Location = new Point(150, 30);
+            btnBgColor.Location = new Point(236, 42);
+            btnBgColor.Margin = new Padding(5, 4, 5, 4);
             btnBgColor.Name = "btnBgColor";
-            btnBgColor.Size = new Size(100, 30);
+            btnBgColor.Size = new Size(157, 42);
             btnBgColor.TabIndex = 0;
             btnBgColor.Text = "选择颜色";
             btnBgColor.UseVisualStyleBackColor = true;
-            btnBgColor.Click += btnBgColor_Click;
+            btnBgColor.Click += ColorButton_Click;
             // 
             // nudWidth
             // 
-            nudWidth.Location = new Point(150, 120);
+            nudWidth.Location = new Point(236, 169);
+            nudWidth.Margin = new Padding(5, 4, 5, 4);
             nudWidth.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
             nudWidth.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
             nudWidth.Name = "nudWidth";
-            nudWidth.Size = new Size(100, 23);
+            nudWidth.Size = new Size(157, 30);
             nudWidth.TabIndex = 2;
             nudWidth.Value = new decimal(new int[] { 100, 0, 0, 0 });
             // 
             // nudHeight
             // 
-            nudHeight.Location = new Point(150, 153);
+            nudHeight.Location = new Point(236, 216);
+            nudHeight.Margin = new Padding(5, 4, 5, 4);
             nudHeight.Maximum = new decimal(new int[] { 300, 0, 0, 0 });
             nudHeight.Minimum = new decimal(new int[] { 50, 0, 0, 0 });
             nudHeight.Name = "nudHeight";
-            nudHeight.Size = new Size(100, 23);
+            nudHeight.Size = new Size(157, 30);
             nudHeight.TabIndex = 3;
             nudHeight.Value = new decimal(new int[] { 50, 0, 0, 0 });
             // 
             // chkShowName
             // 
             chkShowName.AutoSize = true;
-            chkShowName.Location = new Point(30, 206);
+            chkShowName.Location = new Point(47, 291);
+            chkShowName.Margin = new Padding(5, 4, 5, 4);
             chkShowName.Name = "chkShowName";
-            chkShowName.Size = new Size(75, 21);
+            chkShowName.Size = new Size(108, 28);
             chkShowName.TabIndex = 4;
             chkShowName.Text = "显示名称";
             chkShowName.UseVisualStyleBackColor = true;
@@ -400,9 +278,10 @@ namespace StockTrade
             // chkShowCode
             // 
             chkShowCode.AutoSize = true;
-            chkShowCode.Location = new Point(172, 206);
+            chkShowCode.Location = new Point(270, 291);
+            chkShowCode.Margin = new Padding(5, 4, 5, 4);
             chkShowCode.Name = "chkShowCode";
-            chkShowCode.Size = new Size(75, 21);
+            chkShowCode.Size = new Size(108, 28);
             chkShowCode.TabIndex = 5;
             chkShowCode.Text = "显示代码";
             chkShowCode.UseVisualStyleBackColor = true;
@@ -410,9 +289,10 @@ namespace StockTrade
             // chkShowCurrentPrice
             // 
             chkShowCurrentPrice.AutoSize = true;
-            chkShowCurrentPrice.Location = new Point(30, 236);
+            chkShowCurrentPrice.Location = new Point(47, 333);
+            chkShowCurrentPrice.Margin = new Padding(5, 4, 5, 4);
             chkShowCurrentPrice.Name = "chkShowCurrentPrice";
-            chkShowCurrentPrice.Size = new Size(75, 21);
+            chkShowCurrentPrice.Size = new Size(108, 28);
             chkShowCurrentPrice.TabIndex = 6;
             chkShowCurrentPrice.Text = "显示现价";
             chkShowCurrentPrice.UseVisualStyleBackColor = true;
@@ -420,9 +300,10 @@ namespace StockTrade
             // chkShowOpenPrice
             // 
             chkShowOpenPrice.AutoSize = true;
-            chkShowOpenPrice.Location = new Point(172, 236);
+            chkShowOpenPrice.Location = new Point(270, 333);
+            chkShowOpenPrice.Margin = new Padding(5, 4, 5, 4);
             chkShowOpenPrice.Name = "chkShowOpenPrice";
-            chkShowOpenPrice.Size = new Size(87, 21);
+            chkShowOpenPrice.Size = new Size(126, 28);
             chkShowOpenPrice.TabIndex = 7;
             chkShowOpenPrice.Text = "显示开盘价";
             chkShowOpenPrice.UseVisualStyleBackColor = true;
@@ -430,9 +311,10 @@ namespace StockTrade
             // chkShowChangeAmount
             // 
             chkShowChangeAmount.AutoSize = true;
-            chkShowChangeAmount.Location = new Point(30, 266);
+            chkShowChangeAmount.Location = new Point(47, 376);
+            chkShowChangeAmount.Margin = new Padding(5, 4, 5, 4);
             chkShowChangeAmount.Name = "chkShowChangeAmount";
-            chkShowChangeAmount.Size = new Size(87, 21);
+            chkShowChangeAmount.Size = new Size(126, 28);
             chkShowChangeAmount.TabIndex = 8;
             chkShowChangeAmount.Text = "显示涨跌额";
             chkShowChangeAmount.UseVisualStyleBackColor = true;
@@ -440,29 +322,32 @@ namespace StockTrade
             // chkShowChangePercent
             // 
             chkShowChangePercent.AutoSize = true;
-            chkShowChangePercent.Location = new Point(172, 266);
+            chkShowChangePercent.Location = new Point(270, 376);
+            chkShowChangePercent.Margin = new Padding(5, 4, 5, 4);
             chkShowChangePercent.Name = "chkShowChangePercent";
-            chkShowChangePercent.Size = new Size(87, 21);
+            chkShowChangePercent.Size = new Size(126, 28);
             chkShowChangePercent.TabIndex = 9;
             chkShowChangePercent.Text = "显示涨跌幅";
             chkShowChangePercent.UseVisualStyleBackColor = true;
             // 
             // btnApply
             // 
-            btnApply.Location = new Point(80, 301);
+            btnApply.Location = new Point(126, 565);
+            btnApply.Margin = new Padding(5, 4, 5, 4);
             btnApply.Name = "btnApply";
-            btnApply.Size = new Size(80, 30);
-            btnApply.TabIndex = 16;
+            btnApply.Size = new Size(126, 42);
+            btnApply.TabIndex = 29;
             btnApply.Text = "应用";
             btnApply.UseVisualStyleBackColor = true;
             btnApply.Click += btnApply_Click;
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(180, 300);
+            btnClose.Location = new Point(283, 565);
+            btnClose.Margin = new Padding(5, 4, 5, 4);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(80, 30);
-            btnClose.TabIndex = 17;
+            btnClose.Size = new Size(126, 42);
+            btnClose.TabIndex = 30;
             btnClose.Text = "关闭";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
@@ -470,164 +355,249 @@ namespace StockTrade
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(30, 35);
+            label1.Location = new Point(47, 49);
+            label1.Margin = new Padding(5, 0, 5, 0);
             label1.Name = "label1";
-            label1.Size = new Size(68, 17);
+            label1.Size = new Size(100, 24);
             label1.TabIndex = 18;
             label1.Text = "背景颜色：";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(30, 125);
+            label3.Location = new Point(47, 176);
+            label3.Margin = new Padding(5, 0, 5, 0);
             label3.Name = "label3";
-            label3.Size = new Size(44, 17);
+            label3.Size = new Size(64, 24);
             label3.TabIndex = 20;
             label3.Text = "宽度：";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(30, 155);
+            label4.Location = new Point(47, 219);
+            label4.Margin = new Padding(5, 0, 5, 0);
             label4.Name = "label4";
-            label4.Size = new Size(44, 17);
+            label4.Size = new Size(64, 24);
             label4.TabIndex = 21;
             label4.Text = "高度：";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(30, 181);
+            label5.Location = new Point(47, 256);
+            label5.Margin = new Padding(5, 0, 5, 0);
             label5.Name = "label5";
-            label5.Size = new Size(68, 17);
+            label5.Size = new Size(100, 24);
             label5.TabIndex = 22;
             label5.Text = "显示字段：";
             // 
             // btnNameColor
             // 
-            btnNameColor.Location = new Point(123, 203);
+            btnNameColor.Location = new Point(193, 287);
+            btnNameColor.Margin = new Padding(5, 4, 5, 4);
             btnNameColor.Name = "btnNameColor";
-            btnNameColor.Size = new Size(40, 21);
+            btnNameColor.Size = new Size(63, 30);
             btnNameColor.TabIndex = 10;
             btnNameColor.Text = "色";
             btnNameColor.UseVisualStyleBackColor = true;
-            btnNameColor.Click += btnNameColor_Click;
+            btnNameColor.Click += ColorButton_Click;
             // 
             // btnCodeColor
             // 
-            btnCodeColor.Location = new Point(260, 206);
+            btnCodeColor.Location = new Point(409, 291);
+            btnCodeColor.Margin = new Padding(5, 4, 5, 4);
             btnCodeColor.Name = "btnCodeColor";
-            btnCodeColor.Size = new Size(40, 21);
+            btnCodeColor.Size = new Size(63, 30);
             btnCodeColor.TabIndex = 11;
             btnCodeColor.Text = "色";
             btnCodeColor.UseVisualStyleBackColor = true;
-            btnCodeColor.Click += btnCodeColor_Click;
+            btnCodeColor.Click += ColorButton_Click;
             // 
             // btnCurrentPriceColor
             // 
-            btnCurrentPriceColor.Location = new Point(123, 233);
+            btnCurrentPriceColor.Location = new Point(193, 329);
+            btnCurrentPriceColor.Margin = new Padding(5, 4, 5, 4);
             btnCurrentPriceColor.Name = "btnCurrentPriceColor";
-            btnCurrentPriceColor.Size = new Size(40, 21);
+            btnCurrentPriceColor.Size = new Size(63, 30);
             btnCurrentPriceColor.TabIndex = 12;
             btnCurrentPriceColor.Text = "色";
             btnCurrentPriceColor.UseVisualStyleBackColor = true;
-            btnCurrentPriceColor.Click += btnCurrentPriceColor_Click;
+            btnCurrentPriceColor.Click += ColorButton_Click;
             // 
             // btnOpenPriceColor
             // 
-            btnOpenPriceColor.Location = new Point(260, 236);
+            btnOpenPriceColor.Location = new Point(409, 333);
+            btnOpenPriceColor.Margin = new Padding(5, 4, 5, 4);
             btnOpenPriceColor.Name = "btnOpenPriceColor";
-            btnOpenPriceColor.Size = new Size(40, 21);
+            btnOpenPriceColor.Size = new Size(63, 30);
             btnOpenPriceColor.TabIndex = 13;
             btnOpenPriceColor.Text = "色";
             btnOpenPriceColor.UseVisualStyleBackColor = true;
-            btnOpenPriceColor.Click += btnOpenPriceColor_Click;
+            btnOpenPriceColor.Click += ColorButton_Click;
             // 
             // btnChangeAmountColor
             // 
-            btnChangeAmountColor.Location = new Point(123, 263);
+            btnChangeAmountColor.Location = new Point(193, 371);
+            btnChangeAmountColor.Margin = new Padding(5, 4, 5, 4);
             btnChangeAmountColor.Name = "btnChangeAmountColor";
-            btnChangeAmountColor.Size = new Size(40, 21);
+            btnChangeAmountColor.Size = new Size(63, 30);
             btnChangeAmountColor.TabIndex = 14;
             btnChangeAmountColor.Text = "色";
             btnChangeAmountColor.UseVisualStyleBackColor = true;
-            btnChangeAmountColor.Click += btnChangeAmountColor_Click;
+            btnChangeAmountColor.Click += ColorButton_Click;
             // 
             // btnChangePercentColor
             // 
-            btnChangePercentColor.Location = new Point(260, 266);
+            btnChangePercentColor.Location = new Point(409, 376);
+            btnChangePercentColor.Margin = new Padding(5, 4, 5, 4);
             btnChangePercentColor.Name = "btnChangePercentColor";
-            btnChangePercentColor.Size = new Size(40, 21);
+            btnChangePercentColor.Size = new Size(63, 30);
             btnChangePercentColor.TabIndex = 15;
             btnChangePercentColor.Text = "色";
             btnChangePercentColor.UseVisualStyleBackColor = true;
-            btnChangePercentColor.Click += btnChangePercentColor_Click;
+            btnChangePercentColor.Click += ColorButton_Click;
             // 
             // labelNameColor
             // 
             labelNameColor.Location = new Point(0, 0);
+            labelNameColor.Margin = new Padding(5, 0, 5, 0);
             labelNameColor.Name = "labelNameColor";
-            labelNameColor.Size = new Size(100, 23);
+            labelNameColor.Size = new Size(157, 32);
             labelNameColor.TabIndex = 5;
             // 
             // labelCodeColor
             // 
             labelCodeColor.Location = new Point(0, 0);
+            labelCodeColor.Margin = new Padding(5, 0, 5, 0);
             labelCodeColor.Name = "labelCodeColor";
-            labelCodeColor.Size = new Size(100, 23);
+            labelCodeColor.Size = new Size(157, 32);
             labelCodeColor.TabIndex = 4;
             // 
             // labelCurrentPriceColor
             // 
             labelCurrentPriceColor.Location = new Point(0, 0);
+            labelCurrentPriceColor.Margin = new Padding(5, 0, 5, 0);
             labelCurrentPriceColor.Name = "labelCurrentPriceColor";
-            labelCurrentPriceColor.Size = new Size(100, 23);
+            labelCurrentPriceColor.Size = new Size(157, 32);
             labelCurrentPriceColor.TabIndex = 3;
             // 
             // labelOpenPriceColor
             // 
             labelOpenPriceColor.Location = new Point(0, 0);
+            labelOpenPriceColor.Margin = new Padding(5, 0, 5, 0);
             labelOpenPriceColor.Name = "labelOpenPriceColor";
-            labelOpenPriceColor.Size = new Size(100, 23);
+            labelOpenPriceColor.Size = new Size(157, 32);
             labelOpenPriceColor.TabIndex = 2;
             // 
             // labelChangeAmountColor
             // 
             labelChangeAmountColor.Location = new Point(0, 0);
+            labelChangeAmountColor.Margin = new Padding(5, 0, 5, 0);
             labelChangeAmountColor.Name = "labelChangeAmountColor";
-            labelChangeAmountColor.Size = new Size(100, 23);
+            labelChangeAmountColor.Size = new Size(157, 32);
             labelChangeAmountColor.TabIndex = 1;
             // 
             // labelChangePercentColor
             // 
             labelChangePercentColor.Location = new Point(0, 0);
+            labelChangePercentColor.Margin = new Padding(5, 0, 5, 0);
             labelChangePercentColor.Name = "labelChangePercentColor";
-            labelChangePercentColor.Size = new Size(100, 23);
+            labelChangePercentColor.Size = new Size(157, 32);
             labelChangePercentColor.TabIndex = 0;
             // 
             // trkBgOpacity
             // 
-            trkBgOpacity.Location = new Point(150, 70);
+            trkBgOpacity.Location = new Point(236, 99);
+            trkBgOpacity.Margin = new Padding(5, 4, 5, 4);
             trkBgOpacity.Maximum = 100;
             trkBgOpacity.Name = "trkBgOpacity";
-            trkBgOpacity.Size = new Size(100, 45);
+            trkBgOpacity.Size = new Size(157, 69);
             trkBgOpacity.TabIndex = 1;
             trkBgOpacity.Value = 90;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(30, 85);
+            label6.Location = new Point(47, 120);
+            label6.Margin = new Padding(5, 0, 5, 0);
             label6.Name = "label6";
-            label6.Size = new Size(80, 17);
+            label6.Size = new Size(118, 24);
             label6.TabIndex = 19;
             label6.Text = "背景透明度：";
             // 
+            // cmbFontFamily
+            // 
+            cmbFontFamily.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFontFamily.Location = new Point(236, 412);
+            cmbFontFamily.Margin = new Padding(5, 4, 5, 4);
+            cmbFontFamily.Name = "cmbFontFamily";
+            cmbFontFamily.Size = new Size(155, 32);
+            cmbFontFamily.TabIndex = 24;
+            // 
+            // nudFontSize
+            // 
+            nudFontSize.Location = new Point(236, 460);
+            nudFontSize.Margin = new Padding(5, 4, 5, 4);
+            nudFontSize.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            nudFontSize.Minimum = new decimal(new int[] { 6, 0, 0, 0 });
+            nudFontSize.Name = "nudFontSize";
+            nudFontSize.Size = new Size(157, 30);
+            nudFontSize.TabIndex = 26;
+            nudFontSize.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            // 
+            // nudScrollInterval
+            // 
+            nudScrollInterval.Location = new Point(236, 508);
+            nudScrollInterval.Margin = new Padding(5, 4, 5, 4);
+            nudScrollInterval.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            nudScrollInterval.Minimum = new decimal(new int[] { 1000, 0, 0, 0 });
+            nudScrollInterval.Name = "nudScrollInterval";
+            nudScrollInterval.Size = new Size(157, 30);
+            nudScrollInterval.TabIndex = 28;
+            nudScrollInterval.Value = new decimal(new int[] { 3000, 0, 0, 0 });
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(47, 418);
+            label7.Margin = new Padding(5, 0, 5, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(64, 24);
+            label7.TabIndex = 23;
+            label7.Text = "字体：";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(47, 466);
+            label8.Margin = new Padding(5, 0, 5, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(100, 24);
+            label8.TabIndex = 25;
+            label8.Text = "字体大小：";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(47, 514);
+            label9.Margin = new Padding(5, 0, 5, 0);
+            label9.Name = "label9";
+            label9.Size = new Size(100, 24);
+            label9.TabIndex = 27;
+            label9.Text = "滚动间隔：";
+            // 
             // MiniDisplayConfigForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(320, 340);
+            ClientSize = new Size(756, 706);
+            Controls.Add(nudScrollInterval);
+            Controls.Add(label9);
+            Controls.Add(nudFontSize);
+            Controls.Add(label8);
+            Controls.Add(cmbFontFamily);
+            Controls.Add(label7);
             Controls.Add(labelChangePercentColor);
             Controls.Add(labelChangeAmountColor);
             Controls.Add(labelOpenPriceColor);
@@ -658,6 +628,7 @@ namespace StockTrade
             Controls.Add(trkBgOpacity);
             Controls.Add(btnBgColor);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(5, 4, 5, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "MiniDisplayConfigForm";
@@ -665,6 +636,8 @@ namespace StockTrade
             ((System.ComponentModel.ISupportInitialize)nudWidth).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkBgOpacity).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudFontSize).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudScrollInterval).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
