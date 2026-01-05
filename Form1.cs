@@ -37,6 +37,8 @@ namespace StockTrade
         private int _scrollPosition = 0;
         private string _scrollText = string.Empty;
         private MiniDisplayForm _miniDisplayForm;
+        // 添加BindingSource字段，用于管理数据绑定
+        private BindingSource _bindingSource;
 
         #endregion
 
@@ -228,7 +230,10 @@ namespace StockTrade
 
             // 初始化数据源
             _stockList = new List<Stock>();
-            dgvStocks.DataSource = _stockList;
+            // 初始化BindingSource
+            _bindingSource = new BindingSource();
+            _bindingSource.DataSource = _stockList;
+            dgvStocks.DataSource = _bindingSource;
         }
 
         #endregion
@@ -271,7 +276,6 @@ namespace StockTrade
                 }
 
                 // 更新UI
-                txtApiToken.Text = _config.ApiToken;
                 chkEnableScrolling.Checked = _config.EnableScrolling;
                 chkEnableMiniDisplay.Checked = _config.EnableMiniDisplay;
                 chkMiniDisplayTopMost.Checked = _config.MiniDisplayTopMost;
@@ -325,12 +329,10 @@ namespace StockTrade
                 _apiClient.Dispose();
             }
 
-            if (!string.IsNullOrEmpty(_config.ApiToken))
-            {
-                _apiClient = new ApiClient(_config.ApiToken);
-                // 订阅API日志事件
-                _apiClient.ApiLog += (sender, e) => UpdateApiLog(e.Message);
-            }
+            // 新浪API不需要token，直接初始化
+            _apiClient = new ApiClient(string.Empty);
+            // 订阅API日志事件
+            _apiClient.ApiLog += (sender, e) => UpdateApiLog(e.Message);
         }
 
         #endregion
@@ -492,42 +494,8 @@ namespace StockTrade
         /// <param name="e"></param>
         private async void btnSaveToken_Click(object sender, EventArgs e)
         {
-            string token = txtApiToken.Text.Trim();
-            if (string.IsNullOrEmpty(token))
-            {
-                MessageBox.Show("请输入API Token", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            _config.ApiToken = token;
-            bool saved = SaveConfig();
-
-            if (saved)
-            {
-                UpdateApiClient();
-                await UpdateStockDataAsync();
-
-                string resultMessage = "API Token保存成功";
-
-                if (_stockList.Count > 0)
-                {
-                    resultMessage += $"\n\n成功查询到 {_stockList.Count} 只股票数据";
-                    MessageBox.Show(resultMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else if (_config.StockCodes.Count > 0)
-                {
-                    resultMessage += "\n\n股票数据查询失败，请检查网络连接";
-                    MessageBox.Show(resultMessage, "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    MessageBox.Show(resultMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            else
-            {
-                MessageBox.Show("API Token保存失败，请检查权限", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // 新浪API不需要API Token，此功能已废弃
+            MessageBox.Show("新浪API不需要API Token", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -613,30 +581,35 @@ namespace StockTrade
         }
 
         /// <summary>
+        /// 清空股票数据按钮点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            // 清空所有股票代码
+            _config.StockCodes.Clear();
+            SaveConfig();
+            // 更新股票数据
+            _stockList.Clear();
+            _bindingSource.ResetBindings(false);
+            UpdateStatusLabel("已清空所有股票数据");
+            // 更新小窗口数据
+            if (_miniDisplayForm != null)
+            {
+                _miniDisplayForm.SetStockData(_stockList);
+            }
+            // 清空滚动文本
+            _scrollText = string.Empty;
+        }
+
+        /// <summary>
         /// 判断当前时间是否在交易时间内
         /// </summary>
         /// <returns>是否在交易时间内</returns>
         private bool IsInTradingTime()
         {
-            try
-            {
-                // 解析开盘和休市时间
-                if (TimeSpan.TryParse(_config.OpenTime, out TimeSpan openTime) &&
-                    TimeSpan.TryParse(_config.CloseTime, out TimeSpan closeTime))
-                {
-                    // 获取当前时间
-                    TimeSpan now = DateTime.Now.TimeOfDay;
-
-                    // 判断是否在交易时间内
-                    return now >= openTime && now <= closeTime;
-                }
-            }
-            catch (Exception ex)
-            {
-                UpdateApiLog($"解析交易时间出错：{ex.Message}");
-            }
-
-            // 解析失败时默认返回true，继续更新
+            // 新浪API不限制访问时间，始终返回true
             return true;
         }
 
@@ -647,15 +620,7 @@ namespace StockTrade
         /// <param name="e"></param>
         private async void timerUpdate_Tick(object sender, EventArgs e)
         {
-            // 只有在交易时间内才执行刷新
-            if (IsInTradingTime())
-            {
-                await UpdateStockDataAsync();
-            }
-            else
-            {
-                UpdateApiLog($"当前时间不在交易时间内（{_config.OpenTime}-{_config.CloseTime}），跳过刷新");
-            }
+            await UpdateStockDataAsync();
         }
 
         /// <summary>

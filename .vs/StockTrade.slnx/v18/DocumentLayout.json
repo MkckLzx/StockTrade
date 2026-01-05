@@ -3,19 +3,27 @@
   "WorkspaceRootPath": "E:\\Github\\StockTrade\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|e:\\github\\stocktrade\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|solutionrelative:form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|e:\\github\\stocktrade\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|e:\\github\\stocktrade\\minidisplayform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|solutionrelative:minidisplayform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|e:\\github\\stocktrade\\minidisplayconfigform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|E:\\Github\\StockTrade\\minidisplayconfigform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|solutionrelative:minidisplayconfigform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|e:\\github\\stocktrade\\globalhotkeyconfigform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|E:\\Github\\StockTrade\\globalhotkeyconfigform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|solutionrelative:globalhotkeyconfigform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|e:\\github\\stocktrade\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|E:\\Github\\StockTrade\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A697100E-893D-BAB9-ECE5-FBFBDFE36C98}|StockTrade.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -38,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 17,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Bookmark",
@@ -94,7 +102,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "Form1.Designer.cs",
+              "DocumentMoniker": "E:\\Github\\StockTrade\\Form1.Designer.cs",
+              "RelativeDocumentMoniker": "Form1.Designer.cs",
+              "ToolTip": "E:\\Github\\StockTrade\\Form1.Designer.cs",
+              "RelativeToolTip": "Form1.Designer.cs",
+              "ViewState": "AgIAANoAAAAAAAAAAAAmwO4AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-05T14:41:55.31Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "E:\\Github\\StockTrade\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "E:\\Github\\StockTrade\\Form1.cs",
+              "RelativeToolTip": "Form1.cs",
+              "ViewState": "AgIAANcAAAAAAAAAAAAmwOsAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-05T14:41:29.556Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "ApiClient.cs",
               "DocumentMoniker": "E:\\Github\\StockTrade\\ApiClient.cs",
               "RelativeDocumentMoniker": "ApiClient.cs",
@@ -102,12 +136,11 @@
               "RelativeToolTip": "ApiClient.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADoAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-27T11:02:02.497Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-27T11:02:02.497Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "MiniDisplayForm.cs",
               "DocumentMoniker": "E:\\Github\\StockTrade\\MiniDisplayForm.cs",
               "RelativeDocumentMoniker": "MiniDisplayForm.cs",
@@ -120,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "Models.cs",
               "DocumentMoniker": "E:\\Github\\StockTrade\\Models.cs",
               "RelativeDocumentMoniker": "Models.cs",
@@ -128,12 +161,11 @@
               "RelativeToolTip": "Models.cs",
               "ViewState": "AgIAANcAAAAAAAAAAAAYwNEAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-27T10:59:26.255Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-27T10:59:26.255Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Form1.cs [\u8BBE\u8BA1]",
               "DocumentMoniker": "E:\\Github\\StockTrade\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
@@ -145,7 +177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "MiniDisplayForm.cs [\u8BBE\u8BA1]",
               "DocumentMoniker": "E:\\Github\\StockTrade\\MiniDisplayForm.cs",
               "RelativeDocumentMoniker": "MiniDisplayForm.cs",
@@ -157,27 +189,25 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "MiniDisplayConfigForm.cs [\u8BBE\u8BA1]",
               "DocumentMoniker": "E:\\Github\\StockTrade\\MiniDisplayConfigForm.cs",
               "RelativeDocumentMoniker": "MiniDisplayConfigForm.cs",
               "ToolTip": "E:\\Github\\StockTrade\\MiniDisplayConfigForm.cs [\u8BBE\u8BA1]",
               "RelativeToolTip": "MiniDisplayConfigForm.cs [\u8BBE\u8BA1]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-26T14:37:37.127Z",
-              "EditorCaption": " [\u8BBE\u8BA1]"
+              "WhenOpened": "2025-12-26T14:37:37.127Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "GlobalHotkeyConfigForm.cs [\u8BBE\u8BA1]",
               "DocumentMoniker": "E:\\Github\\StockTrade\\GlobalHotkeyConfigForm.cs",
               "RelativeDocumentMoniker": "GlobalHotkeyConfigForm.cs",
               "ToolTip": "E:\\Github\\StockTrade\\GlobalHotkeyConfigForm.cs [\u8BBE\u8BA1]",
               "RelativeToolTip": "GlobalHotkeyConfigForm.cs [\u8BBE\u8BA1]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-26T14:37:22.371Z",
-              "EditorCaption": " [\u8BBE\u8BA1]"
+              "WhenOpened": "2025-12-26T14:37:22.371Z"
             }
           ]
         }
